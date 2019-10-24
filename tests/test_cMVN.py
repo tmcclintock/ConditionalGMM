@@ -45,3 +45,24 @@ def test_cMN_exceptions():
         cGMM.MNorm.CondMNorm(means, cov, [0, 1, 2, 2])
     with pytest.raises(AssertionError):
         cGMM.MNorm.CondMNorm(means, cov, [2, 2])
+
+def test_conditional_cov():
+    #2D
+    means = [0.5, -0.2]
+    cov = [[2.0, 0.0], [0.0, 0.5]]
+    ind = [1]
+    cMN = cGMM.MNorm.CondMNorm(means, cov, ind)
+    Sigma11 = cMN.conditional_cov()
+    npt.assert_array_equal(Sigma11, [2.0])
+    mu1 = cMN.conditional_mean([1])
+    npt.assert_equal(means[:1], mu1)
+
+    #3D
+    means = [0.5, -0.2, 1.0]
+    cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
+    ind = [2]
+    cMN = cGMM.MNorm.CondMNorm(means, cov, ind)
+    Sigma11 = cMN.conditional_cov()
+    npt.assert_array_equal(Sigma11, [[2.0, 0.3], [0.3, 0.5]])
+    mu1 = cMN.conditional_mean([1])
+    npt.assert_equal(means[:2], mu1)

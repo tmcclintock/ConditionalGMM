@@ -79,4 +79,15 @@ class CondMNorm(object):
         Sigs = self.Sigmas["Sigma12_dot_Sigma22I"]
         assert len(x2) == len(mu_2)
 
-        return mu_2 + np.dot(Sigs, (x2 - mu_2))
+        return self.mus["mu_1"] + np.dot(Sigs, (x2 - mu_2))
+
+    def conditional_cov(self):
+        """The conditional covariance of the free variables.
+        
+        Args:
+            None
+
+        Returns:
+            conditional covariance of the free variables (x_1)
+        """
+        return np.squeeze(self.Sigmas["Sigma_c"])
