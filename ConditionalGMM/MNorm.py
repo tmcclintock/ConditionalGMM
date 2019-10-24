@@ -11,7 +11,7 @@ class CondMNorm(object):
     Args:
         joint_means (`numpy.ndarray`): joint mean of all random variables (RVs)
         joint_cov (`numpy.ndarray`): joint covariance matrix of all RVs
-        fixed_indices (array-like): list of indices for the fixed variabces
+        fixed_indices (array-like): list of indices for the fixed variables
 
     """
     def __init__(self, joint_means, joint_cov, fixed_indices):
