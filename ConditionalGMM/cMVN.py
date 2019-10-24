@@ -48,7 +48,7 @@ class conditionalMultivariateNormal(object):
         #Compute Sigma_{12} dot Sigma_22
         Sigma12_dot_Sigma22I = np.linalg.solve(Sigma_22, Sigma_12.T).T
         #Compute the conditional covariance
-        Sigma_c = Sigma_11 - Sigma12_dot_Sigma22I @ Sigma_12.T
+        Sigma_c = Sigma_11 - np.dot(Sigma12_dot_Sigma22I, Sigma_12.T)
 
         #Save everything
         self.mus = {"mu_1": mu_1, "mu_2": mu_2}
