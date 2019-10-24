@@ -21,3 +21,5 @@ or with `pip`:
 and then install this package
 
 `python setup.py install`
+
+At this point you should test the installation by running `pytest`.
