@@ -12,6 +12,7 @@ class CondMNorm(object):
         joint_means (`numpy.ndarray`): joint mean of all random variables (RVs)
         joint_cov (`numpy.ndarray`): joint covariance matrix of all RVs
         fixed_indices (array-like): list of indices for the fixed variabces
+
     """
     def __init__(self, joint_means, joint_cov, fixed_indices):
         #Do some error checking
@@ -56,3 +57,26 @@ class CondMNorm(object):
         self.Sigmas = {"Sigma_11": Sigma_11, "Sigma_12": Sigma_12,
                        "Sigma_22": Sigma_22, "Sigma_c": Sigma_c,
                        "Sigma12_dot_Sigma22I": Sigma12_dot_Sigma22I}
+
+    def conditional_mean(self, x2 = None):
+        """Compute the conditional mean (expectation value)
+        of the free variables given the value of the fixed variables.
+
+        Args:
+            x2 (float or array-like): values of the fixed variables;
+                default is `None`, yielding the unconditional mean
+
+        Returns:
+            conditional mean of the free variables (x1)
+
+        """
+        
+        if x2 is None:
+            return self.mus["mu_1"]
+
+        assert isinstance(x2, (list, np.ndarray))
+        mu_2 = self.mus["mu_2"]
+        Sigs = self.Sigmas["Sigma12_dot_Sigma22I"]
+        assert len(x2) == len(mu_2)
+
+        return mu_2 + np.dot(Sigs, (x2 - mu_2))
