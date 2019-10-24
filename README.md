@@ -23,3 +23,9 @@ and then install this package
 `python setup.py install`
 
 At this point you should test the installation by running `pytest`.
+
+## The math
+
+Following [this stackexchange post](https://stats.stackexchange.com/questions/348941/general-conditional-distributions-for-multivariate-gaussian-mixtures), this package implements the last two equations.
+
+TO DO
