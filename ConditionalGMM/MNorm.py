@@ -23,6 +23,7 @@ class CondMNorm(object):
         assert len(joint_cov) == len(joint_cov[0])
         assert isinstance(fixed_indices, (list, np.ndarray))
         fixed_indices = np.asarray(fixed_indices, dtype=np.int)
+        assert len(fixed_indices) < len(joint_means)
         assert all(fixed_indices > -1)
         assert np.max(fixed_indices) < len(joint_means)
         #No repetition
