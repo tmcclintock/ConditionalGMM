@@ -20,10 +20,63 @@ class CondGMM(object):
 
     """
     def __init__(self, weights, means, covs,
-                 fixed_indices = None, fixed_components = None):
+                 fixed_indices, fixed_components = None):
+        assert isinstance(weights, (list, np.ndarray))
+        assert isinstance(means, (list, np.ndarray))
+        assert isinstance(covs, (list, np.ndarray))
+        assert isinstance(fixed_indices, (list, np.ndarray))
+        weights = np.asarray(weights)
+        means = np.asarray(means)
+        covs = np.asarray(covs)
+        fixed_indices = np.asarray(fixed_indices, dtype=np.int)
+        assert covs.ndim == 3
+        assert len(weights) == len(means)
+        assert len(weights) == len(covs)
+        np.testing.assert_almost_equal(weights.sum(), 1.)
+        
         self.weights = weights
         self.means = means
         self.covs = covs
         self.fixed_indices = fixed_indices
         self.fixed_components = fixed_components
 
+        #Create conditional multivarate normal distributions
+        cMVNs = [CondMNorm(means[i], covs[i], fixed_indices)
+                 for i in range(len(means))]
+        self.conditionalMVNs = cMVNs
+
+    def conditional_component_means(self, x2 = None):
+        pass
+
+    def conditional_component_covs(self):
+        pass
+
+    def conditional_weights(self, x2 = None):
+        pass
+        
+    def conditional_mean(self, x2 = None):
+        pass
+
+    def pdf(self, x1, x2 = None):
+        pass
+
+    def logpdf(self, x1, x2 = None):
+        pass
+
+    def rvs(self, x2, size = 1, random_state = None, component_labels = False):
+        """Draw random samples from the conditional GMM
+        conditioned on `x2`.
+
+        Args:
+            x2 (array-like): observation of the fixed variable
+            size (int): number of random samples; default is 1
+            random_state (int): state that numpy uses for drawing samples
+            component_labels (bool): if `True`, return the label for which
+                component each RV was drawn from
+
+        Returns:
+            random variable distributed according to the conditional GMM
+
+        """
+        assert size >= 1
+        pass

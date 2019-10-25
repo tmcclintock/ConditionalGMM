@@ -84,5 +84,15 @@ def test_conditional_probs():
     npt.assert_equal(ss.multivariate_normal.logpdf(means2, mean=mu1, cov=Sigma11),
                      ss.multivariate_normal.logpdf(means2, mean=means2, cov=cov2))
 
+def test_rvs():
+    means = [0.5, -0.2, 1.0]
+    cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
+    ind = [2]
+    cMN = cGMM.CondMNorm(means, cov, ind)
+    N = 10000
+    x1_realizations = cMN.rvs([1], size=N, random_state=42)
+
+    npt.assert_equal(x1_realizations.shape, [N, 2])
+
 if __name__ == "__main__":
     test_conditional_probs()
