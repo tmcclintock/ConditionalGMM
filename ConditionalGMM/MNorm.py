@@ -51,7 +51,7 @@ class CondMNorm(object):
         Sigma12_dot_Sigma22I = np.linalg.solve(Sigma_22, Sigma_12.T).T
         #Compute the conditional covariance
         Sigma_c = Sigma_11 - np.dot(Sigma12_dot_Sigma22I, Sigma_12.T)
-
+        
         #Save everything
         self.mus = {"mu_1": mu_1, "mu_2": mu_2}
         self.Sigmas = {"Sigma_11": Sigma_11, "Sigma_12": Sigma_12,
@@ -91,3 +91,72 @@ class CondMNorm(object):
             conditional covariance of the free variables (x_1)
         """
         return np.squeeze(self.Sigmas["Sigma_c"])
+
+    def pdf(x1, x2 = None):
+        """Conditional probability distribution function of `x1` 
+        conditional on `x2`.
+
+        Args:
+            x1 (array-like): free variable
+            x2 (array-like): observation of the fixed variable; 
+                default is None, equivalent to using `x2 = mu_2`
+        
+        Returns:
+            conditional probability distribution function
+
+        """
+        
+        assert isinstance(x1, (list, np.ndarray))
+        x1 = np.asarray(x1)
+        assert len(x1) == len(self.mus["mu_1"])
+        
+        mu_1 = self.conditional_mean(x2)
+        Sigma_1 = self.conditional_cov()
+
+        return sp.stats.multivariate_normal.pdf(x1, mean=mu_1, cov=Sigma_1)
+
+    def logpdf(x1, x2 = None):
+        """Natural log of the conditional probability distribution 
+        function of `x1` conditional on `x2`.
+
+        Args:
+            x1 (array-like): free variable
+            x2 (array-like): observation of the fixed variable; 
+                default is None, equivalent to using `x2 = mu_2`
+        
+        Returns:
+            log of the conditional probability distribution function
+
+        """
+
+        assert isinstance(x1, (list, np.ndarray))
+        x1 = np.asarray(x1)
+        assert len(x1) == len(self.mus["mu_1"])
+        
+        mu_1 = self.conditional_mean(x2)
+        Sigma_1 = self.conditional_cov()
+
+        return sp.stats.multivariate_normal.logpdf(x1, mean=mu_1, cov=Sigma_1)
+
+    def rvs(x2 = None, size = 1, random_state = None):
+        """Draw random samples from the conditional multivariate
+        normal distribution conditioned on `x2`.
+
+        Args:
+            x2 (array-like): observation of the fixed variable; 
+                default is None, equivalent to using `x2 = mu_2`
+            size (int): number of random samples; default is 1
+            random_state: state that numpy uses for drawing samples
+
+        Returns:
+            random variable distributed according to the conditional PDF
+
+        """
+        assert size >= 1
+
+        mu_1 = self.conditional_mean(x2)
+        Sigma_1 = self.conditional_cov()
+
+        return sp.stats.multivariate_normal.rvs(mean=mu_1, cov=Sigma_1,
+                                                size = size,
+                                                random_state = random_state)

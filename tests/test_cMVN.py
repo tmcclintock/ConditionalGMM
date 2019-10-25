@@ -2,6 +2,7 @@
 """
 import ConditionalGMM as cGMM
 import numpy as np
+import scipy.stats as ss
 import numpy.testing as npt
 import pytest
 
@@ -46,7 +47,7 @@ def test_cMN_exceptions():
     with pytest.raises(AssertionError):
         cGMM.CondMNorm(means, cov, [2, 2])
 
-def test_conditional_cov():
+def test_conditional_mean_and_cov():
     #2D
     means = [0.5, -0.2]
     cov = [[2.0, 0.0], [0.0, 0.5]]
@@ -66,3 +67,22 @@ def test_conditional_cov():
     npt.assert_array_equal(Sigma11, [[2.0, 0.3], [0.3, 0.5]])
     mu1 = cMN.conditional_mean([1])
     npt.assert_equal(means[:2], mu1)
+
+def test_conditional_probs():
+    means = [0.5, -0.2, 1.0]
+    cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
+    ind = [2]
+    cMN = cGMM.CondMNorm(means, cov, ind)
+    mu1 = cMN.conditional_mean([1])
+    Sigma11 = cMN.conditional_cov()
+
+    means2 = [0.5, -0.2]
+    cov2 = [[2.0, 0.3], [0.3, 0.5]]
+
+    npt.assert_equal(ss.multivariate_normal.pdf(means2, mean=mu1, cov=Sigma11),
+                     ss.multivariate_normal.pdf(means2, mean=means2, cov=cov2))
+    npt.assert_equal(ss.multivariate_normal.logpdf(means2, mean=mu1, cov=Sigma11),
+                     ss.multivariate_normal.logpdf(means2, mean=means2, cov=cov2))
+
+if __name__ == "__main__":
+    test_conditional_probs()
