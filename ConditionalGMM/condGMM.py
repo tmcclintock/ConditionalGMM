@@ -49,10 +49,32 @@ class CondGMM(object):
         self.conditionalMVNs = cMVNs
 
     def conditional_component_means(self, x2 = None):
-        pass
+        """Compute the conditional mean (expectation value)
+        of the free variables given the value of the fixed variables
+        for each component in the mixture model.
+
+        Args:
+            x2 (float or array-like): values of the fixed variables;
+                default is `None`, yielding the unconditional means
+
+        Returns:
+            conditional mean of the free variables (x1) for each component
+
+        """
+        return np.array([d.conditional_mean(x2) for d in self.conditionalMVNs])
 
     def conditional_component_covs(self):
-        pass
+        """The conditional covariance of the free variables for
+        each component in the mixture model.
+        
+        Args:
+            None
+
+        Returns:
+            conditional covariance of the free variables (x1) for each component
+
+        """
+        return np.array([d.conditional_cov() for d in self.conditionalMVNs])
 
     def conditional_weights(self, x2 = None):
         pass
