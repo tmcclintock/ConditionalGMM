@@ -89,6 +89,7 @@ class CondMNorm(object):
 
         Returns:
             conditional covariance of the free variables (x_1)
+
         """
         return np.squeeze(self.Sigmas["Sigma_c"])
 
