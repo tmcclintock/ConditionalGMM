@@ -76,10 +76,66 @@ class CondGMM(object):
         """
         return np.array([d.conditional_cov() for d in self.conditionalMVNs])
 
+    def unconditional_pdf_x2(self, x2 = None, component_probs = False):
+        """The unconditional probability of the fixed variable (x2), f(x2)
+        This is required in order to properly normalize the conditional
+        probability of x1, f(x1 | x2).
+
+        Args:
+            x2 (float or array-like): values of the fixed variables;
+                default is `None`, yielding the unconditional means
+            component_probs (bool): if True then return the probabilities of
+                x2 having been drawn from each component, otherwise
+                return the sum of these probabilities
+
+        Returns:
+            unconditional probability of x2
+
+        """
+        w = self.weights
+        dists = self.conditionalMVNs
+        mus = np.array([d._mu_2() for d in dists])
+        covs = np.array([d._Sigma_22() for d in dists])
+
+        probs = w * np.array([sp.stats.multivariate_normal.pdf(x2, mean=mu[i], cov=cov[i]) for i in range(len(w))])
+
+        if component_probs:
+            return probs
+        else:
+            return probs.sum()
+
+    def unconditional_logpdf_x2(self, x2 = None):
+        """The unconditional log-probability of the fixed variable (x2).
+
+        Args:
+            x2 (float or array-like): values of the fixed variables;
+                default is `None`, yielding the unconditional means
+
+        Returns:
+            unconditional log-probability of x2, ln(f(x2))
+
+        """
+        return np.log(self.unconditional_logpdf_x2(x2))
+    
     def conditional_weights(self, x2 = None):
-        pass
+        """Conditional weights (pi_i) of each component conditioned on
+        the observation of x2.
+
+        Args:
+            x2 (float or array-like): values of the fixed variables;
+                default is `None`, yielding the unconditional means
+
+        Returns:
+            conditional component weights (pi_i)
+
+        """
+        probs = self.unconditional_pdf_x2(x2, True)
+        return probs / probs.sum()
         
     def conditional_mean(self, x2 = None):
+        pass
+
+    def conditional_median(self, x2 = None):
         pass
 
     def pdf(self, x1, x2 = None):

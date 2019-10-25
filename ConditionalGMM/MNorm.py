@@ -93,6 +93,16 @@ class CondMNorm(object):
         """
         return np.squeeze(self.Sigmas["Sigma_c"])
 
+    def _mu_2(self):
+        """Means of x2.
+        """
+        return self.mus["mu_2"]
+    
+    def _Sigma_22(self):
+        """Covariance matrix of x2.
+        """
+        return self.Sigmas["Sigma_22"]
+
     def pdf(self, x1, x2 = None):
         """Conditional probability distribution function of `x1` 
         conditional on `x2`.
