@@ -92,7 +92,7 @@ class CondMNorm(object):
         """
         return np.squeeze(self.Sigmas["Sigma_c"])
 
-    def pdf(x1, x2 = None):
+    def pdf(self, x1, x2 = None):
         """Conditional probability distribution function of `x1` 
         conditional on `x2`.
 
@@ -115,7 +115,7 @@ class CondMNorm(object):
 
         return sp.stats.multivariate_normal.pdf(x1, mean=mu_1, cov=Sigma_1)
 
-    def logpdf(x1, x2 = None):
+    def logpdf(self, x1, x2 = None):
         """Natural log of the conditional probability distribution 
         function of `x1` conditional on `x2`.
 
@@ -138,7 +138,7 @@ class CondMNorm(object):
 
         return sp.stats.multivariate_normal.logpdf(x1, mean=mu_1, cov=Sigma_1)
 
-    def rvs(x2 = None, size = 1, random_state = None):
+    def rvs(self, x2 = None, size = 1, random_state = None):
         """Draw random samples from the conditional multivariate
         normal distribution conditioned on `x2`.
 
