@@ -29,7 +29,10 @@ class CondGMM(object):
         means = np.asarray(means)
         covs = np.asarray(covs)
         fixed_indices = np.asarray(fixed_indices, dtype=np.int)
+        assert weights.ndim == 1
+        assert means.ndim == 2
         assert covs.ndim == 3
+        assert fixed_indices.ndim == 1
         assert len(weights) == len(means)
         assert len(weights) == len(covs)
         np.testing.assert_almost_equal(weights.sum(), 1.)
