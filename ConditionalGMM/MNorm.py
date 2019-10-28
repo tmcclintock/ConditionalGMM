@@ -75,7 +75,7 @@ class CondMNorm(object):
         
         if x2 is None:
             return self.mus["mu_1"]
-
+        x2 = np.atleast_1d(x2)
         assert isinstance(x2, (list, np.ndarray))
         mu_2 = self.mus["mu_2"]
         Sigs = self.Sigmas["Sigma12_dot_Sigma22I"]
@@ -170,9 +170,9 @@ class CondMNorm(object):
         mu_1 = self.conditional_mean(x2)
         Sigma_1 = self.conditional_cov()
 
-        return ss.multivariate_normal.rvs(mean=mu_1, cov=Sigma_1,
-                                                size = size,
-                                                random_state = random_state)
+        return np.squeeze(ss.multivariate_normal.rvs(mean=mu_1, cov=Sigma_1,
+                                                     size=size,
+                                                     random_state=random_state))
 
     def joint_pdf(self, x1, x2 = None):
         """Joint probability distribution 
