@@ -38,6 +38,12 @@ cGMM = ConditionalGMM.CondGMM(weights, means, covs, fixed_indices)
 where `fixed_indices` is an array of the dimensions that you will take conditionals on. In this example, we will look at `y` conditional on `x`, so we would have `fixed_indices = [0]`.
 
 Given some observations of `x` with this package you can quickly compute conditional probability distributions:
+```python
+y = np.linspace(-12, 0, 200)
+x_obs = np.array([-1, 4, 7])
+for i, x in enumerate(x_obs):
+    y_cpdf = np.array([cGMM.conditional_pdf([yi], x) for yi in y])
+```
 ![alt text](https://github.com/tmcclintock/ConditionalGMM/blob/master/notebooks/figures/cPDF_2comps.png "conditional PDF")
 
 This package also lets you draw random values (RVs) from the conditional PDF.

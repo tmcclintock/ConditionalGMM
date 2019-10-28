@@ -206,7 +206,7 @@ class CondMNorm(object):
             x2 = self.mus["mu_2"]
 
         assert isinstance(x1, (list, np.ndarray))
-        assert isinstance(x2, (list, np.ndarray))
+        #assert isinstance(x2, (list, np.ndarray))
         x1 = np.atleast_1d(x1)
         x2 = np.atleast_1d(x2)
         assert len(x1) == len(self.mus["mu_1"])
