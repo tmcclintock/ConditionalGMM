@@ -32,7 +32,6 @@ Suppose you had some data described by some number of Gaussians:
 Once you have a GMM describing the data (the lines) you can create a conditional GMM object:
 ```python
 import ConditionalGMM
-
 cGMM = ConditionalGMM.CondGMM(weights, means, covs, fixed_indices)
 ```
 where `fixed_indices` is an array of the dimensions that you will take conditionals on. In this example, we will look at `y` conditional on `x`, so we would have `fixed_indices = [0]`.
