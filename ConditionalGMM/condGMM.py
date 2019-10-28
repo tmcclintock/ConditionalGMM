@@ -36,13 +36,16 @@ class CondGMM(object):
         assert len(weights) == len(means)
         assert len(weights) == len(covs)
         np.testing.assert_almost_equal(weights.sum(), 1.)
-        
+
         self.weights = weights
         self.means = means
         self.covs = covs
         self.fixed_indices = fixed_indices
         self.fixed_components = fixed_components
 
+        self.x2_ndim = len(self.fixed_indices)
+        self.x1_ndim = len(self.means[0]) - self.x2_ndim
+        
         #Create conditional multivarate normal distributions
         cMVNs = [CondMNorm(means[i], covs[i], fixed_indices)
                  for i in range(len(means))]
@@ -200,15 +203,41 @@ class CondGMM(object):
         conditioned on `x2`.
 
         Args:
-            x2 (array-like): observation of the fixed variable
+            x2 (array-like): observation of the fixed variable;
+                default is `None`, which uses the unconditional
+                mean of x2 over all components
             size (int): number of random samples; default is 1
             random_state (int): state that numpy uses for drawing samples
-            component_labels (bool): if `True`, return the label for which
-                component each RV was drawn from
+            component_labels (bool): if `True`, also return the label for 
+                which component each RV was drawn from
 
         Returns:
             random variable distributed according to the conditional GMM
 
         """
         assert size >= 1
-        pass
+
+        if x2 is None:
+            x2 = self.unconditional_x2_mean()
+
+        if random_state is not None:
+            np.random.seed(random_state)
+        
+        #Output array
+        rvs = np.zeros((size, self.x1_ndim))
+
+        #Choose which components the data come from
+        inds = np.arange(len(self.weights))
+        components = np.random.choice(inds, size = size, p = self.weights)
+        _, counts = np.unique(components, return_counts = True)
+
+        #Get RVs from each component
+        dists = self.conditionalMVNs
+        for i, n in enumerate(counts):
+            rvs_i = dists[i].rvs(x2 = x2, size = n)
+            rvs[i == components] = rvs_i
+
+        if component_labels:
+            return rvs, components
+        else:
+            return rvs

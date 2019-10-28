@@ -28,3 +28,31 @@ def test_cGMM_exceptions():
     fixed_inds = [1]
     with pytest.raises(AssertionError):
         cGMM = cgmm.CondGMM(weights, means, covs, 1)
+
+def test_rvs():
+    #1 component
+    weights = [1.]
+    means = [[0.5, -0.2, 1.0]]
+    cov = [[[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]]
+    ind = [2]
+    cGMM = cgmm.CondGMM(weights, means, cov, ind)
+    N = 10000
+    x1_realizations = cGMM.rvs([1], size=N, random_state=42)
+    npt.assert_equal(x1_realizations.shape, [N, 2])
+
+    #2 components
+    weights = [0.2, 0.8]
+    means = [[0.5, -0.2, 1.0], [1., -0.1, 1.0]]
+    cov = [[[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]],
+           [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]]
+    ind = [2]
+    cGMM = cgmm.CondGMM(weights, means, cov, ind)
+    N = 10000
+    x1_realizations, labels = cGMM.rvs([1], size=N, random_state=42,
+                                       component_labels=True)
+    npt.assert_equal(x1_realizations.shape, [N, 2])
+    npt.assert_equal(len(labels), N)
+
+    
+if __name__ == "__main__":
+    test_rvs()

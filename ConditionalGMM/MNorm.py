@@ -2,6 +2,7 @@
 """
 import numpy as np
 import scipy as sp
+import scipy.stats as ss
 
 class CondMNorm(object):
     """Conditional multivariate normal. Given a joint mean vector and
@@ -124,7 +125,7 @@ class CondMNorm(object):
         mu_1 = self.conditional_mean(x2)
         Sigma_1 = self.conditional_cov()
 
-        return sp.stats.multivariate_normal.pdf(x1, mean=mu_1, cov=Sigma_1)
+        return ss.multivariate_normal.pdf(x1, mean=mu_1, cov=Sigma_1)
 
     def logpdf(self, x1, x2 = None):
         """Natural log of the conditional probability distribution 
@@ -147,7 +148,7 @@ class CondMNorm(object):
         mu_1 = self.conditional_mean(x2)
         Sigma_1 = self.conditional_cov()
 
-        return sp.stats.multivariate_normal.logpdf(x1, mean=mu_1, cov=Sigma_1)
+        return ss.multivariate_normal.logpdf(x1, mean=mu_1, cov=Sigma_1)
 
     def rvs(self, x2 = None, size = 1, random_state = None):
         """Draw random samples from the conditional multivariate
@@ -168,7 +169,7 @@ class CondMNorm(object):
         mu_1 = self.conditional_mean(x2)
         Sigma_1 = self.conditional_cov()
 
-        return sp.stats.multivariate_normal.rvs(mean=mu_1, cov=Sigma_1,
+        return ss.multivariate_normal.rvs(mean=mu_1, cov=Sigma_1,
                                                 size = size,
                                                 random_state = random_state)
 
@@ -212,4 +213,4 @@ class CondMNorm(object):
         x = np.hstack((x1, x2))
         mu = self.joint_means
         cov = self.joint_cov
-        return sp.stats.multivariate_normal.logpdf(x, mean = mu, cov = cov)
+        return ss.multivariate_normal.logpdf(x, mean = mu, cov = cov)
