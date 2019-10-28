@@ -169,35 +169,67 @@ class CondGMM(object):
     def conditional_median(self, x2 = None):
         pass
 
-    def pdf(self, x1, x2 = None):
+    def conditional_pdf(self, x1, x2 = None):
         """The conditional probability of x1.
 
         Args:
+            x1 (array-like): free variable
             x2 (float or array-like): values of the fixed variables;
-                default is `None`, yielding the unconditional means
+                default is `None`, which uses the unconditional mean of x2
 
         Returns:
             conditional probability of x1, f(x1|x2)
 
         """
-        return np.exp(self.logpdf(x1, x2))
+        return np.exp(self.conditional_logpdf(x1, x2))
 
-    def logpdf(self, x1, x2 = None):
-        """The conditional probability of x1.
+    def conditional_logpdf(self, x1, x2 = None):
+        """The conditional log probability of x1.
 
         Args:
+            x1 (array-like): free variable
             x2 (float or array-like): values of the fixed variables;
-                default is `None`, yielding the unconditional means
+                default is `None`, which uses the unconditional mean of x2
 
         Returns:
-            conditional probability of x1, f(x1|x2)
+            conditional log probability of x1, f(x1|x2)
 
         """
         f_x2 = self.unconditional_pdf_x2(x2)
         dists = self.conditionalMVNs
         joint_pdfs = np.array([d.joint_pdf(x1, x2) for d in dists])
-        return np.log(np.sum(self.weights * joint_pdfs)) - np.log(f_x2)
+        return np.log(self.joint_pdf(x1, x2)) - np.log(f_x2)
 
+    def joint_logpdf(self, x1, x2 = None):
+        """The joint log probability of (x1, x2)
+
+        Args:
+            x1 (array-like): free variable
+            x2 (float or array-like): values of the fixed variables;
+                default is `None`, which uses the unconditional mean of x2
+
+        Returns:
+            log joint probability of (x1, x2)
+
+        """
+        dists = self.conditionalMVNs
+        joint_pdfs = np.array([d.joint_pdf(x1, x2) for d in dists])
+        return np.log(np.sum(self.weights * joint_pdfs))
+
+    def joint_pdf(self, x1, x2 = None):
+        """The joint probability of (x1, x2)
+
+        Args:
+            x1 (array-like): free variable
+            x2 (float or array-like): values of the fixed variables;
+                default is `None`, which uses the unconditional mean of x2
+
+        Returns:
+            log joint probability of (x1, x2)
+
+        """
+        return np.exp(self.joint_logpdf(x1, x2))
+    
     def rvs(self, x2, size = 1, random_state = None, component_labels = False):
         """Draw random samples from the conditional GMM
         conditioned on `x2`.
