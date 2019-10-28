@@ -41,7 +41,7 @@ Given some observations of `x` with this package you can quickly compute conditi
 ```python
 y = np.linspace(-12, 0, 200)
 x_obs = np.array([-1, 4, 7])
-for i, x in enumerate(x_obs):
+for x in x_obs:
     y_cpdf = np.array([cGMM.conditional_pdf([yi], x) for yi in y])
 ```
 ![alt text](https://github.com/tmcclintock/ConditionalGMM/blob/master/notebooks/figures/cPDF_2comps.png "conditional PDF")
