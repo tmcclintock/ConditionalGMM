@@ -108,5 +108,14 @@ def test_jointpdfs():
     npt.assert_equal(ss.multivariate_normal.pdf(x, means, cov), pdf)
     npt.assert_equal(ss.multivariate_normal.logpdf(x, means, cov), logpdf)
 
+def test_conditional_mean():
+    means = [0.5, -0.2, 1.0]
+    cov = [[2.0, 0.3, 0.1], [0.3, 0.5, 0.1], [0.1, 0.1, 1.0]]
+    ind = [2]
+    cMN = cGMM.CondMNorm(means, cov, ind)
+    x2 = [1.0]
+    cmean = cMN.conditional_mean(x2)
+    npt.assert_array_equal(means[:2], cmean)
+
 if __name__ == "__main__":
     test_conditional_probs()

@@ -116,9 +116,22 @@ class CondGMM(object):
 
         """
         return np.log(self.unconditional_logpdf_x2(x2))
+
+    def unconditional_x2_mean(self):
+        """Unconditional mean (considering all components) of x2.
+
+        Args:
+            None
+
+        Returns:
+            unconditional mean of x2 (E[x2])
+
+        """
+        mu2s = np.array([d._mu_2() for d in self.conditionalMVNs])
+        return self.weights * mu2s 
     
     def conditional_weights(self, x2 = None):
-        """Conditional weights (pi_i) of each component conditioned on
+        """Conditional weights (pi_i|x2) of each component conditioned on
         the observation of x2.
 
         Args:
@@ -126,23 +139,61 @@ class CondGMM(object):
                 default is `None`, yielding the unconditional means
 
         Returns:
-            conditional component weights (pi_i)
+            conditional component weights (pi_i|x2)
 
         """
         probs = self.unconditional_pdf_x2(x2, True)
         return probs / probs.sum()
         
     def conditional_mean(self, x2 = None):
-        pass
+        """Conditional mean of x1 (E[x1|x2]).
 
+        Args:
+            x2 (float or array-like): values of the fixed variables;
+                default is `None`, which uses the unconditional
+                mean of x2 over all components
+
+        Returns:
+            conditional mean of x1 conditioned on x2
+
+        """
+        if x2 is None:
+            x2 = self.unconditional_x2_mean()
+        c_weights = self.conditional_weights(x2)
+        mus = np.array([d.conditional_mean(x2) for d in self.conditionalMVNs])
+        return np.sum(c_weights * mus, axis = 0)
+        
     def conditional_median(self, x2 = None):
         pass
 
     def pdf(self, x1, x2 = None):
-        pass
+        """The conditional probability of x1.
+
+        Args:
+            x2 (float or array-like): values of the fixed variables;
+                default is `None`, yielding the unconditional means
+
+        Returns:
+            conditional probability of x1, f(x1|x2)
+
+        """
+        return np.exp(self.logpdf(x1, x2))
 
     def logpdf(self, x1, x2 = None):
-        pass
+        """The conditional probability of x1.
+
+        Args:
+            x2 (float or array-like): values of the fixed variables;
+                default is `None`, yielding the unconditional means
+
+        Returns:
+            conditional probability of x1, f(x1|x2)
+
+        """
+        f_x2 = self.unconditional_pdf_x2(x2)
+        dists = self.conditionalMVNs
+        joint_pdfs = np.array([d.joint_pdf(x1, x2) for d in dists])
+        return np.log(np.sum(self.weights * joint_pdfs)) - np.log(f_x2)
 
     def rvs(self, x2, size = 1, random_state = None, component_labels = False):
         """Draw random samples from the conditional GMM
