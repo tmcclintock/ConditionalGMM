@@ -94,5 +94,19 @@ def test_rvs():
 
     npt.assert_equal(x1_realizations.shape, [N, 2])
 
+def test_jointpdfs():
+    means = [0.5, -0.2, 1.0]
+    cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
+    ind = [2]
+    cMN = cGMM.CondMNorm(means, cov, ind)
+    x = [0.2, 0.0, 0.0]
+    x1 = x[:2]
+    x2 = x[2:]
+    pdf = cMN.joint_pdf(x1, x2)
+    logpdf = cMN.joint_logpdf(x1, x2)
+
+    npt.assert_equal(ss.multivariate_normal.pdf(x, means, cov), pdf)
+    npt.assert_equal(ss.multivariate_normal.logpdf(x, means, cov), logpdf)
+
 if __name__ == "__main__":
     test_conditional_probs()

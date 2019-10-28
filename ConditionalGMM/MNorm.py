@@ -171,3 +171,45 @@ class CondMNorm(object):
         return sp.stats.multivariate_normal.rvs(mean=mu_1, cov=Sigma_1,
                                                 size = size,
                                                 random_state = random_state)
+
+    def joint_pdf(self, x1, x2 = None):
+        """Joint probability distribution 
+        function of `x1` and `x2`.
+
+        Args:
+            x1 (array-like): free variable
+            x2 (array-like): observation of the fixed variable;
+                default is `None`, resulting in x2 = mu_2
+        
+        Returns:
+            joint probability distribution function
+
+        """
+        return np.exp(self.joint_logpdf(x1, x2))
+
+    def joint_logpdf(self, x1, x2 = None):
+        """Log of the joint probability distribution 
+        function of `x1` and `x2`.
+
+        Args:
+            x1 (array-like): free variable
+            x2 (array-like): observation of the fixed variable;
+                default is `None`, resulting in x2 = mu_2
+        
+        Returns:
+            log of the joint probability distribution function
+
+        """
+        if x2 is None:
+            x2 = self.mus["mu_2"]
+
+        assert isinstance(x1, (list, np.ndarray))
+        assert isinstance(x2, (list, np.ndarray))
+        x1 = np.asarray(x1)
+        x2 = np.asarray(x2)
+        assert len(x1) == len(self.mus["mu_1"])
+        assert len(x2) == len(self.mus["mu_2"])
+        x = np.hstack((x1, x2))
+        mu = self.joint_means
+        cov = self.joint_cov
+        return sp.stats.multivariate_normal.logpdf(x, mean = mu, cov = cov)
