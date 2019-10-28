@@ -46,4 +46,12 @@ for x in x_obs:
 ```
 ![alt text](https://github.com/tmcclintock/ConditionalGMM/blob/master/notebooks/figures/cPDF_2comps.png "conditional PDF")
 
-This package also lets you draw random values (RVs) from the conditional PDF.
+This package also lets you draw random values (RVs) from the conditional PDF. For instance, here are ten thousand draws from each of the conditional PDFs shown above:
+```python
+x_obs = np.array([-1, 4, 7])
+bins = np.arange(-12, 0, 0.5)
+N = 100000
+for x in x_obs:
+    y_rvs = cGMM.rvs(x, size=N)
+```
+![alt text](https://github.com/tmcclintock/ConditionalGMM/blob/master/notebooks/figures/hist_2comps.png "conditional RVs")
