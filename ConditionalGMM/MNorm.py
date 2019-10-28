@@ -39,6 +39,7 @@ class CondMNorm(object):
         #Save the submatrices
         inds = np.arange(len(joint_means))
         free_indices = np.delete(inds, fixed_indices)
+        self.free_indices = free_indices
         mu_1 = joint_means[free_indices]
         mu_2 = joint_means[fixed_indices]
         Sigma_11 = joint_cov[free_indices]
@@ -206,11 +207,13 @@ class CondMNorm(object):
 
         assert isinstance(x1, (list, np.ndarray))
         assert isinstance(x2, (list, np.ndarray))
-        x1 = np.asarray(x1)
-        x2 = np.asarray(x2)
+        x1 = np.atleast_1d(x1)
+        x2 = np.atleast_1d(x2)
         assert len(x1) == len(self.mus["mu_1"])
         assert len(x2) == len(self.mus["mu_2"])
-        x = np.hstack((x1, x2))
+        x = np.zeros(len(x1) + len(x2))
+        x[self.free_indices] = x1
+        x[self.fixed_indices] = x2
         mu = self.joint_means
         cov = self.joint_cov
         return ss.multivariate_normal.logpdf(x, mean = mu, cov = cov)

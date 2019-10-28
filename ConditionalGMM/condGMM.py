@@ -100,8 +100,8 @@ class CondGMM(object):
         mus = np.array([d._mu_2() for d in dists])
         covs = np.array([d._Sigma_22() for d in dists])
 
-        probs = w * np.array([sp.stats.multivariate_normal.pdf(x2, mean=mu[i], cov=cov[i]) for i in range(len(w))])
-
+        probs = w*np.array([sp.stats.multivariate_normal.pdf(x2, mean=mus[i], cov=covs[i])
+                                       for i in range(len(w))])
         if component_probs:
             return probs
         else:
@@ -118,7 +118,7 @@ class CondGMM(object):
             unconditional log-probability of x2, ln(f(x2))
 
         """
-        return np.log(self.unconditional_logpdf_x2(x2))
+        return np.log(self.unconditional_pdf_x2(x2))
 
     def unconditional_x2_mean(self):
         """Unconditional mean (considering all components) of x2.
@@ -196,9 +196,7 @@ class CondGMM(object):
 
         """
         f_x2 = self.unconditional_pdf_x2(x2)
-        dists = self.conditionalMVNs
-        joint_pdfs = np.array([d.joint_pdf(x1, x2) for d in dists])
-        return np.log(self.joint_pdf(x1, x2)) - np.log(f_x2)
+        return self.joint_logpdf(x1, x2) - np.log(f_x2)
 
     def joint_logpdf(self, x1, x2 = None):
         """The joint log probability of (x1, x2)
