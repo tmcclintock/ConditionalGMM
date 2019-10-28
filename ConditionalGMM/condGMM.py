@@ -255,15 +255,20 @@ class CondGMM(object):
         
         #Output array
         rvs = np.zeros((size, self.x1_ndim))
+        rvs = np.squeeze(rvs)
 
         #Choose which components the data come from
-        inds = np.arange(len(self.weights))
-        components = np.random.choice(inds, size = size, p = self.weights)
-        _, counts = np.unique(components, return_counts = True)
+        c_weights = self.conditional_weights(x2)
+        inds = np.arange(len(c_weights))
+        components = np.random.choice(inds, size = size, p = c_weights)
+        #_, counts = np.unique(components, return_counts = True)
 
         #Get RVs from each component
         dists = self.conditionalMVNs
-        for i, n in enumerate(counts):
+        for i in inds:
+            n = len(components[components == i])
+            if n == 0: #Skip if no draws
+                continue
             rvs_i = dists[i].rvs(x2 = x2, size = n)
             rvs[i == components] = rvs_i
 
