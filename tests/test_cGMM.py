@@ -52,6 +52,8 @@ def test_rvs():
                                        component_labels=True)
     npt.assert_equal(x1_realizations.shape, [N, 2])
     npt.assert_equal(len(labels), N)
+    npt.assert_equal(len(labels[labels == 0]) > 0, True)
+    npt.assert_equal(len(labels[labels == 1]) > 0, True)
 
     
 if __name__ == "__main__":
