@@ -79,7 +79,7 @@ class CondMNorm(object):
         Sigs = self.Sigmas["Sigma12_dot_Sigma22I"]
         assert len(x2) == len(mu_2)
 
-        return self.mus["mu_1"] + np.dot(Sigs, (x2 - mu_2))
+        return np.squeeze(self.mus["mu_1"] + np.dot(Sigs, (x2 - mu_2)))
 
     def conditional_cov(self):
         """The conditional covariance of the free variables.
@@ -96,12 +96,12 @@ class CondMNorm(object):
     def _mu_2(self):
         """Means of x2.
         """
-        return self.mus["mu_2"]
+        return np.squeeze(self.mus["mu_2"])
     
     def _Sigma_22(self):
         """Covariance matrix of x2.
         """
-        return self.Sigmas["Sigma_22"]
+        return np.squeeze(self.Sigmas["Sigma_22"])
 
     def pdf(self, x1, x2 = None):
         """Conditional probability distribution function of `x1` 
