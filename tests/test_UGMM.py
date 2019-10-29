@@ -20,3 +20,10 @@ def test_statistical_moments():
 
     npt.assert_equal(ugmm.mean(), 0)
     npt.assert_equal(ugmm.median(), 0)
+
+    means = [2., 2.]
+    vars = [1., 2.]
+    ugmm = UnivariateGMM.UniGMM(weights, means, vars)
+
+    npt.assert_equal(ugmm.mean(), 2)
+    npt.assert_equal(ugmm.median(), 2)
