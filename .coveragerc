@@ -1,6 +1,6 @@
 [run]
 include =
-        ./PanoramAI/*
+        ./ConditionalGMM/*
 omit =
         *tests*
         *__init__*
