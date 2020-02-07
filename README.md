@@ -1,4 +1,4 @@
-# ConditionalGMM [![Build Status](https://travis-ci.com/tmcclintock/ConditionalGMM.svg?branch=master)](https://travis-ci.com/tmcclintock/ConditionalGMM)
+# ConditionalGMM [![Build Status](https://travis-ci.com/tmcclintock/ConditionalGMM.svg?branch=master)](https://travis-ci.com/tmcclintock/ConditionalGMM) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 This repository contains helpful functions for computing conditional distributions of multivariate normal distributions and Gaussian mixture models (GMMs). It is able to return not only the conditional means (expectation values) but also the conditional covariances and conditional component weights (probabilities).
 
