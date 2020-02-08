@@ -67,6 +67,9 @@ def test_conditional_mean_and_cov():
     npt.assert_array_equal(Sigma11, [[2.0, 0.3], [0.3, 0.5]])
     mu1 = cMN.conditional_mean([1])
     npt.assert_equal(means[:2], mu1)
+    mu1 = cMN.conditional_mean()
+    npt.assert_equal(means[:2], mu1)
+
 
 def test_conditional_probs():
     means = [0.5, -0.2, 1.0]
