@@ -118,7 +118,6 @@ class CondMNorm(object):
             conditional probability distribution function
 
         """
-        
         assert isinstance(x1, (list, np.ndarray))
         x1 = np.asarray(x1)
         assert len(x1) == len(self.mus["mu_1"])
