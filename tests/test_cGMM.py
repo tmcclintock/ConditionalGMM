@@ -21,6 +21,20 @@ def test_cGMM_basic():
     fixed_inds = [1]
     cGMM = cgmm.CondGMM(weights, means, covs, fixed_inds)
 
+def test_conditionals_moments():
+    weights = [0.5, 0.5]
+    means = np.array([[0.5, -0.2], [0.2, -0.2]])
+    covs = np.array([[[2.0, 0.3], [0.3, 0.5]], [[2.0, 0.3], [0.3, 0.5]]])
+    fixed_inds = [1]
+    cGMM = cgmm.CondGMM(weights, means, covs, fixed_inds)
+    mu2 = cGMM.conditional_component_means()
+    npt.assert_equal(np.squeeze(mu2), means[:, 0])
+
+    #TODO
+    #Cs = cGMM.conditional_component_covs()
+    #npt.assert_equal(covs[1], Cs)
+    
+
 def test_cGMM_exceptions():
     weights = [1.]
     means = [[0.5, -0.2]]
