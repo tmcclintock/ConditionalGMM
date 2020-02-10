@@ -48,7 +48,7 @@ class UniGMM(object):
         assert np.ndim(x) < 2
         #TODO vectorize
         pdfs = np.array([sp.stats.norm.pdf(x, mi, vi) for mi, vi in
-                         zip(self.means, self.varianeces)])
+                         zip(self.means, self.variances)])
         return np.dot(self.weights, pdfs)
 
     def logpdf(self, x):
