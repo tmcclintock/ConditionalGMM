@@ -255,7 +255,7 @@ class CondGMM(object):
         
         #Output array
         rvs = np.zeros((size, self.x1_ndim))
-        rvs = np.squeeze(rvs)
+        #rvs = np.squeeze(rvs)
 
         #Choose which components the data come from
         c_weights = self.conditional_weights(x2)
@@ -269,7 +269,7 @@ class CondGMM(object):
             n = len(components[components == i])
             if n == 0: #Skip if no draws
                 continue
-            rvs_i = dists[i].rvs(x2 = x2, size = n)
+            rvs_i = np.atleast_2d(dists[i].rvs(x2 = x2, size = n))
             rvs[i == components] = rvs_i
 
         if component_labels:

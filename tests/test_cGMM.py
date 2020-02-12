@@ -69,6 +69,9 @@ def test_rvs():
     npt.assert_equal(len(labels[labels == 0]) > 0, True)
     npt.assert_equal(len(labels[labels == 1]) > 0, True)
 
+    x1_realizations, labels = cGMM.rvs([1], size=1, random_state=42,
+                                       component_labels=True)
+    npt.assert_equal([1,2], x1_realizations.shape)
     
 if __name__ == "__main__":
     test_rvs()
