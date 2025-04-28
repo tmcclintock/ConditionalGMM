@@ -28,7 +28,7 @@ class CondGMM(object):
         weights = np.asarray(weights)
         means = np.asarray(means)
         covs = np.asarray(covs)
-        fixed_indices = np.asarray(fixed_indices, dtype=np.int)
+        fixed_indices = np.asarray(fixed_indices, dtype=np.int64)
         assert weights.ndim == 1
         assert means.ndim == 2
         assert covs.ndim == 3
