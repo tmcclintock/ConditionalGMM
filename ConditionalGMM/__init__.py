@@ -1,5 +1,5 @@
-from .MNorm import *
 from .condGMM import *
+from .MNorm import *
 from .UnivariateGMM import *
 
 __author__ = "Tom McClintock <thmsmcclintock@gmail.com>"
