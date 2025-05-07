@@ -1,8 +1,10 @@
-"""Helpful functions that can only be computed (easily) for univarate GMMs.
-"""
+"""Helpful functions that can only be computed (easily) for univarate GMMs."""
+
 import numpy as np
 import scipy as sp
+
 from .condGMM import *
+
 
 class UniGMM(object):
     """Conditional Gaussian mixture model of a single random variable.
@@ -15,6 +17,7 @@ class UniGMM(object):
         variances (`numpy.ndarray`): N list of variances of the components
 
     """
+
     def __init__(self, weights, means, variances):
         assert isinstance(weights, (list, np.ndarray))
         assert isinstance(means, (list, np.ndarray))
@@ -27,7 +30,7 @@ class UniGMM(object):
         assert variances.ndim == 1
         assert len(weights) == len(means)
         assert len(weights) == len(variances)
-        np.testing.assert_almost_equal(weights.sum(), 1.)
+        np.testing.assert_almost_equal(weights.sum(), 1.0)
 
         self.weights = weights
         self.means = means
@@ -46,9 +49,10 @@ class UniGMM(object):
         """
         x = np.atleast_1d(x)
         assert np.ndim(x) < 2
-        #TODO vectorize
-        pdfs = np.array([sp.stats.norm.pdf(x, mi, vi) for mi, vi in
-                         zip(self.means, self.variances)])
+        # TODO vectorize
+        pdfs = np.array(
+            [sp.stats.norm.pdf(x, mi, vi) for mi, vi in zip(self.means, self.variances)]
+        )
         return np.dot(self.weights, pdfs)
 
     def logpdf(self, x):
@@ -62,7 +66,7 @@ class UniGMM(object):
 
         """
         return np.log(self.pdf(x))
-        
+
     def cdf(self, x):
         """Cumulative probability density function of `x`.
 
@@ -73,8 +77,9 @@ class UniGMM(object):
             CDF
 
         """
-        cdfs = np.array([sp.stats.norm.cdf(x, mi, vi) for mi, vi in
-                         zip(self.means, self.variances)])
+        cdfs = np.array(
+            [sp.stats.norm.cdf(x, mi, vi) for mi, vi in zip(self.means, self.variances)]
+        )
         return np.dot(self.weights, cdfs)
 
     def logcdf(self, x):
@@ -95,7 +100,7 @@ class UniGMM(object):
 
         Args:
             q (float or array-like): lower tail probability
-        
+
         Returns:
             (float or array-like) quantile corresponding to `q`
 

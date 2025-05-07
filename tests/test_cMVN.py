@@ -1,27 +1,29 @@
-"""Tests of the basic conditional multivariate normal
-"""
-import ConditionalGMM as cGMM
-import numpy as np
-import scipy.stats as ss
+"""Tests of the basic conditional multivariate normal"""
+
 import numpy.testing as npt
 import pytest
+import scipy.stats as ss
+
+import ConditionalGMM as cGMM
+
 
 def test_cMN_basic():
-    #Smoke tests
-    #2D
+    # Smoke tests
+    # 2D
     means = [0.5, -0.2]
     cov = [[2.0, 0.3], [0.3, 0.5]]
     ind = [0]
     cMN = cGMM.CondMNorm(means, cov, ind)
 
-    #3D
+    # 3D
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
     inds = [1, 2]
     cMN = cGMM.CondMNorm(means, cov, inds)
-    
+
+
 def test_cMN_exceptions():
-    #3D
+    # 3D
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
     inds = [1, 2]
@@ -47,8 +49,9 @@ def test_cMN_exceptions():
     with pytest.raises(AssertionError):
         cGMM.CondMNorm(means, cov, [2, 2])
 
+
 def test_conditional_mean_and_cov():
-    #2D
+    # 2D
     means = [0.5, -0.2]
     cov = [[2.0, 0.0], [0.0, 0.5]]
     ind = [1]
@@ -58,7 +61,7 @@ def test_conditional_mean_and_cov():
     mu1 = cMN.conditional_mean([1])
     npt.assert_equal(means[:1], mu1)
 
-    #3D
+    # 3D
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
     ind = [2]
@@ -82,10 +85,15 @@ def test_conditional_probs():
     means2 = [0.5, -0.2]
     cov2 = [[2.0, 0.3], [0.3, 0.5]]
 
-    npt.assert_equal(ss.multivariate_normal.pdf(means2, mean=mu1, cov=Sigma11),
-                     ss.multivariate_normal.pdf(means2, mean=means2, cov=cov2))
-    npt.assert_equal(ss.multivariate_normal.logpdf(means2, mean=mu1, cov=Sigma11),
-                     ss.multivariate_normal.logpdf(means2, mean=means2, cov=cov2))
+    npt.assert_equal(
+        ss.multivariate_normal.pdf(means2, mean=mu1, cov=Sigma11),
+        ss.multivariate_normal.pdf(means2, mean=means2, cov=cov2),
+    )
+    npt.assert_equal(
+        ss.multivariate_normal.logpdf(means2, mean=mu1, cov=Sigma11),
+        ss.multivariate_normal.logpdf(means2, mean=means2, cov=cov2),
+    )
+
 
 def test_rvs():
     means = [0.5, -0.2, 1.0]
@@ -96,6 +104,7 @@ def test_rvs():
     x1_realizations = cMN.rvs([1], size=N, random_state=42)
 
     npt.assert_equal(x1_realizations.shape, [N, 2])
+
 
 def test_jointpdfs():
     means = [0.5, -0.2, 1.0]
@@ -113,7 +122,8 @@ def test_jointpdfs():
 
     logpdf = cMN.joint_logpdf(x1)
     npt.assert_equal(cMN.joint_logpdf(x1, means[2:]), logpdf)
-    
+
+
 def test_pdf():
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
@@ -125,11 +135,10 @@ def test_pdf():
     mu1 = cMN.conditional_mean(x2)
     Sigma1 = cMN.conditional_cov()
     pdf = cMN.pdf(x1, x2)
-    npt.assert_equal(
-        pdf, ss.multivariate_normal.pdf(x1, mean=mu1, cov=Sigma1))
+    npt.assert_equal(pdf, ss.multivariate_normal.pdf(x1, mean=mu1, cov=Sigma1))
     logpdf = cMN.logpdf(x1, x2)
-    npt.assert_equal(
-        logpdf, ss.multivariate_normal.logpdf(x1, mean=mu1, cov=Sigma1))
+    npt.assert_equal(logpdf, ss.multivariate_normal.logpdf(x1, mean=mu1, cov=Sigma1))
+
 
 def test_conditional_mean():
     means = [0.5, -0.2, 1.0]
@@ -139,6 +148,7 @@ def test_conditional_mean():
     x2 = [1.0]
     cmean = cMN.conditional_mean(x2)
     npt.assert_array_equal(means[:2], cmean)
+
 
 if __name__ == "__main__":
     test_conditional_probs()
