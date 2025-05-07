@@ -10,19 +10,11 @@ Clone the repository
 
 `git clone https://github.com/tmcclintock/ConditionalGMM`
 
-install the requirements (only `numpy` and `scipy`) using either `conda`:
+install:
 
-`conda install --file requirements.txt`
+`pip install -r pyproject.toml --all-extras`
 
-or `pip`:
-
-`pip install -r requirements.txt`
-
-Install this package
-
-`python setup.py install`
-
-Run the tests with `pytest`.
+PyPI distro coming soon.
 
 ## Usage
 
