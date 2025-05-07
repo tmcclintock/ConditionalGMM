@@ -1,3 +1,6 @@
+# uv files
+uv.lock
+
 # mac files
 *.DS_Store
 
