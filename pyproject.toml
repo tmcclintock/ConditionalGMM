@@ -1,0 +1,31 @@
+[project]
+name = "ConditionalGMM"
+version = "0.1.1"
+authors = [
+  { name="Thomas McClintock", email="thmsmcclintock@gmail.com" },
+]
+description = "Functions for computing conditional distributions of Gaussian mixture models."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+dependencies = [
+  "numpy",
+  "scipy",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "coverage",
+]
+
+[project.urls]
+Homepage = "https://github.com/tmcclintock/ConditionalGMM"
+Issues = "https://github.com/tmcclintock/ConditionalGMM/issues"
+
