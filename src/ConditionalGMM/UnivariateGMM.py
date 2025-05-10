@@ -103,8 +103,9 @@ class UniGMM:
             (float or array-like) quantile corresponding to `q`
 
         """
-        f = lambda x: self.cdf(x) - q
-        return sp.optimize.newton(func=f, x0=self.mean(), fprime=self.pdf)
+        return sp.optimize.newton(
+            func=lambda x: self.cdf(x) - q, x0=self.mean(), fprime=self.pdf
+        )
 
     def mean(self):
         """Mean of the RV for the GMM.

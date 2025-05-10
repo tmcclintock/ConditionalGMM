@@ -14,7 +14,7 @@ def test_cGMM_basic():
     means = [[0.5, -0.2]]
     covs = [[[2.0, 0.3], [0.3, 0.5]]]
     fixed_inds = [1]
-    cGMM = CondGMM(weights, means, covs, fixed_inds)
+    CondGMM(weights, means, covs, fixed_inds)
 
     # 2d - 2 component
     weights = [0.5, 0.5]
