@@ -4,7 +4,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-import ConditionalGMM as cgmm
+from ConditionalGMM.condGMM import CondGMM
 
 
 def test_cGMM_basic():
@@ -14,14 +14,14 @@ def test_cGMM_basic():
     means = [[0.5, -0.2]]
     covs = [[[2.0, 0.3], [0.3, 0.5]]]
     fixed_inds = [1]
-    cGMM = cgmm.CondGMM(weights, means, covs, fixed_inds)
+    cGMM = CondGMM(weights, means, covs, fixed_inds)
 
     # 2d - 2 component
     weights = [0.5, 0.5]
     means = [[0.5, -0.2], [0.2, -0.2]]
     covs = [[[2.0, 0.3], [0.3, 0.5]], [[2.0, 0.3], [0.3, 0.5]]]
     fixed_inds = [1]
-    cGMM = cgmm.CondGMM(weights, means, covs, fixed_inds)
+    CondGMM(weights, means, covs, fixed_inds)
 
 
 def test_conditionals_moments():
@@ -29,7 +29,7 @@ def test_conditionals_moments():
     means = np.array([[0.5, -0.2], [0.2, -0.2]])
     covs = np.array([[[2.0, 0.3], [0.3, 0.5]], [[2.0, 0.3], [0.3, 0.5]]])
     fixed_inds = [1]
-    cGMM = cgmm.CondGMM(weights, means, covs, fixed_inds)
+    cGMM = CondGMM(weights, means, covs, fixed_inds)
     mu2 = cGMM.conditional_component_means()
     npt.assert_equal(np.squeeze(mu2), means[:, 0])
 
@@ -42,9 +42,8 @@ def test_cGMM_exceptions():
     weights = [1.0]
     means = [[0.5, -0.2]]
     covs = [[[2.0, 0.3], [0.3, 0.5]]]
-    fixed_inds = [1]
     with pytest.raises(AssertionError):
-        cGMM = cgmm.CondGMM(weights, means, covs, 1)
+        CondGMM(weights, means, covs, 1)
 
 
 def test_rvs():
@@ -53,7 +52,7 @@ def test_rvs():
     means = [[0.5, -0.2, 1.0]]
     cov = [[[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]]
     ind = [2]
-    cGMM = cgmm.CondGMM(weights, means, cov, ind)
+    cGMM = CondGMM(weights, means, cov, ind)
     N = 10000
     x1_realizations = cGMM.rvs([1], size=N, random_state=42)
     npt.assert_equal(x1_realizations.shape, [N, 2])
@@ -66,7 +65,7 @@ def test_rvs():
         [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]],
     ]
     ind = [2]
-    cGMM = cgmm.CondGMM(weights, means, cov, ind)
+    cGMM = CondGMM(weights, means, cov, ind)
     N = 10000
     x1_realizations, labels = cGMM.rvs(
         [1], size=N, random_state=42, component_labels=True
@@ -80,7 +79,3 @@ def test_rvs():
         [1], size=1, random_state=42, component_labels=True
     )
     npt.assert_equal([1, 2], x1_realizations.shape)
-
-
-if __name__ == "__main__":
-    test_rvs()
