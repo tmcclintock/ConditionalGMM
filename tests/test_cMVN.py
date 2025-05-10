@@ -13,20 +13,19 @@ def test_cMN_basic():
     means = [0.5, -0.2]
     cov = [[2.0, 0.3], [0.3, 0.5]]
     ind = [0]
-    cMN = CondMNorm(means, cov, ind)
+    CondMNorm(means, cov, ind)
 
     # 3D
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
     inds = [1, 2]
-    cMN = CondMNorm(means, cov, inds)
+    CondMNorm(means, cov, inds)
 
 
 def test_cMN_exceptions():
     # 3D
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
-    inds = [1, 2]
 
     with pytest.raises(AssertionError):
         CondMNorm(means, cov, [-1])

@@ -39,7 +39,7 @@ Homepage = "https://github.com/tmcclintock/ConditionalGMM"
 Issues = "https://github.com/tmcclintock/ConditionalGMM/issues"
 
 [tool.coverage.run]
-include = ["./ConditionalGMM/*"]
+include = ["./src/ConditionalGMM/*"]
 omit = [
   "*tests*",
   "*__init__*"
@@ -51,4 +51,9 @@ exclude_lines = [
   "pragma: no cover",
   "if __name__ == .__main__.:",
   "@tf.function"
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.9",
 ]
