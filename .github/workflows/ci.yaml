@@ -18,6 +18,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - uses: astral-sh/ruff-action@v3
+
       - name: Install the project
         run: uv pip install -r pyproject.toml --all-extras
 
