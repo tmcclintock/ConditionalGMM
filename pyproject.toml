@@ -22,10 +22,24 @@ dependencies = [
 [project.optional-dependencies]
 test = [
   "pytest",
-  "coverage",
+  "coverage[toml]",
 ]
 
 [project.urls]
 Homepage = "https://github.com/tmcclintock/ConditionalGMM"
 Issues = "https://github.com/tmcclintock/ConditionalGMM/issues"
 
+[tool.coverage.run]
+include = ["./ConditionalGMM/*"]
+omit = [
+  "*tests*",
+  "*__init__*"
+]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+  "pragma: no cover",
+  "if __name__ == .__main__.:",
+  "@tf.function"
+]
