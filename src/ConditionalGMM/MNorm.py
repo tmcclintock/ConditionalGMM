@@ -4,7 +4,7 @@ import numpy as np
 import scipy.stats as ss
 
 
-class CondMNorm(object):
+class CondMNorm:
     """Conditional multivariate normal. Given a joint mean vector and
     joint covariance matrix, precompute everything that can be computed
     in order to solve conditional expressions.

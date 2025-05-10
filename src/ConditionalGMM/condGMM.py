@@ -6,7 +6,7 @@ import scipy as sp
 from ConditionalGMM.MNorm import CondMNorm
 
 
-class CondGMM(object):
+class CondGMM:
     """Conditional Gaussian mixture model. Built from a collection of
     conditional multivariate normal (CondMNorm) distributions weighted
     to be properly normalized.
