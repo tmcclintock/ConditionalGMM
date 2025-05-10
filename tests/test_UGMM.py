@@ -2,7 +2,7 @@
 
 import numpy as np
 import numpy.testing as npt
-import scipy as sp
+from scipy.stats import norm
 
 from ConditionalGMM import UnivariateGMM
 
@@ -25,7 +25,7 @@ def test_uggm_pdf():
         pdf = ugmm.pdf(x)
         truepdf = np.dot(
             np.array(weights),
-            np.array([sp.stats.norm.pdf(x, mi, vi) for mi, vi in zip(means, vars)]),
+            np.array([norm.pdf(x, mi, vi) for mi, vi in zip(means, vars)]),
         )
         npt.assert_equal(pdf, truepdf)
 
