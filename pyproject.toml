@@ -30,6 +30,10 @@ test = [
   "coverage[toml]",
 ]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project.urls]
 Homepage = "https://github.com/tmcclintock/ConditionalGMM"
 Issues = "https://github.com/tmcclintock/ConditionalGMM/issues"
