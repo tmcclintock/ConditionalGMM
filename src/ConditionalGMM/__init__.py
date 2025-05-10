@@ -1,2 +1,4 @@
+import importlib.metadata
+
 __author__ = "Tom McClintock <thmsmcclintock@gmail.com>"
-__version__ = "0.1.1"
+__version__ = importlib.metadata.version("ConditionalGMM")
