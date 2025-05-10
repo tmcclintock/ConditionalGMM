@@ -3,10 +3,8 @@
 import numpy as np
 import scipy as sp
 
-from ConditionalGMM.condGMM import *
 
-
-class UniGMM(object):
+class UniGMM:
     """Conditional Gaussian mixture model of a single random variable.
     This class exists to provide helpful routines, such as computing CDFs
     and PPFs of the GMM.
