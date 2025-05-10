@@ -3,7 +3,7 @@
 import numpy as np
 import scipy as sp
 
-from .condGMM import *
+from ConditionalGMM.condGMM import *
 
 
 class UniGMM(object):

@@ -4,7 +4,7 @@ import numpy.testing as npt
 import pytest
 import scipy.stats as ss
 
-import ConditionalGMM as cGMM
+from ConditionalGMM.MNorm import CondMNorm
 
 
 def test_cMN_basic():
@@ -13,13 +13,13 @@ def test_cMN_basic():
     means = [0.5, -0.2]
     cov = [[2.0, 0.3], [0.3, 0.5]]
     ind = [0]
-    cMN = cGMM.CondMNorm(means, cov, ind)
+    cMN = CondMNorm(means, cov, ind)
 
     # 3D
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
     inds = [1, 2]
-    cMN = cGMM.CondMNorm(means, cov, inds)
+    cMN = CondMNorm(means, cov, inds)
 
 
 def test_cMN_exceptions():
@@ -29,25 +29,25 @@ def test_cMN_exceptions():
     inds = [1, 2]
 
     with pytest.raises(AssertionError):
-        cGMM.CondMNorm(means, cov, [-1])
+        CondMNorm(means, cov, [-1])
     with pytest.raises(AssertionError):
-        cGMM.CondMNorm(means, cov, [3])
+        CondMNorm(means, cov, [3])
     with pytest.raises(AssertionError):
-        cGMM.CondMNorm(123, cov, [1, 2])
+        CondMNorm(123, cov, [1, 2])
     with pytest.raises(AssertionError):
-        cGMM.CondMNorm(means, 123, [1, 2])
+        CondMNorm(means, 123, [1, 2])
     with pytest.raises(AssertionError):
-        cGMM.CondMNorm(means[:2], cov, [1, 2])
+        CondMNorm(means[:2], cov, [1, 2])
     with pytest.raises(AssertionError):
-        cGMM.CondMNorm(means, cov[:2], [1, 2])
+        CondMNorm(means, cov[:2], [1, 2])
     with pytest.raises(AssertionError):
-        cGMM.CondMNorm(means, cov, 2)
+        CondMNorm(means, cov, 2)
     with pytest.raises(AssertionError):
-        cGMM.CondMNorm(means, cov, 2)
+        CondMNorm(means, cov, 2)
     with pytest.raises(AssertionError):
-        cGMM.CondMNorm(means, cov, [0, 1, 2, 2])
+        CondMNorm(means, cov, [0, 1, 2, 2])
     with pytest.raises(AssertionError):
-        cGMM.CondMNorm(means, cov, [2, 2])
+        CondMNorm(means, cov, [2, 2])
 
 
 def test_conditional_mean_and_cov():
@@ -55,7 +55,7 @@ def test_conditional_mean_and_cov():
     means = [0.5, -0.2]
     cov = [[2.0, 0.0], [0.0, 0.5]]
     ind = [1]
-    cMN = cGMM.CondMNorm(means, cov, ind)
+    cMN = CondMNorm(means, cov, ind)
     Sigma11 = cMN.conditional_cov()
     npt.assert_array_equal(Sigma11, [2.0])
     mu1 = cMN.conditional_mean([1])
@@ -65,7 +65,7 @@ def test_conditional_mean_and_cov():
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
     ind = [2]
-    cMN = cGMM.CondMNorm(means, cov, ind)
+    cMN = CondMNorm(means, cov, ind)
     Sigma11 = cMN.conditional_cov()
     npt.assert_array_equal(Sigma11, [[2.0, 0.3], [0.3, 0.5]])
     mu1 = cMN.conditional_mean([1])
@@ -78,7 +78,7 @@ def test_conditional_probs():
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
     ind = [2]
-    cMN = cGMM.CondMNorm(means, cov, ind)
+    cMN = CondMNorm(means, cov, ind)
     mu1 = cMN.conditional_mean([1])
     Sigma11 = cMN.conditional_cov()
 
@@ -99,7 +99,7 @@ def test_rvs():
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
     ind = [2]
-    cMN = cGMM.CondMNorm(means, cov, ind)
+    cMN = CondMNorm(means, cov, ind)
     N = 10000
     x1_realizations = cMN.rvs([1], size=N, random_state=42)
 
@@ -110,7 +110,7 @@ def test_jointpdfs():
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
     ind = [2]
-    cMN = cGMM.CondMNorm(means, cov, ind)
+    cMN = CondMNorm(means, cov, ind)
     x = [0.2, 0.0, 0.0]
     x1 = x[:2]
     x2 = x[2:]
@@ -128,7 +128,7 @@ def test_pdf():
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.0], [0.3, 0.5, 0.0], [0.0, 0.0, 1.0]]
     ind = [2]
-    cMN = cGMM.CondMNorm(means, cov, ind)
+    cMN = CondMNorm(means, cov, ind)
     x = [0.2, 0.0, 0.0]
     x1 = x[:2]
     x2 = x[2:]
@@ -144,11 +144,7 @@ def test_conditional_mean():
     means = [0.5, -0.2, 1.0]
     cov = [[2.0, 0.3, 0.1], [0.3, 0.5, 0.1], [0.1, 0.1, 1.0]]
     ind = [2]
-    cMN = cGMM.CondMNorm(means, cov, ind)
+    cMN = CondMNorm(means, cov, ind)
     x2 = [1.0]
     cmean = cMN.conditional_mean(x2)
     npt.assert_array_equal(means[:2], cmean)
-
-
-if __name__ == "__main__":
-    test_conditional_probs()
