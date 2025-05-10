@@ -3,7 +3,7 @@
 import numpy as np
 import scipy as sp
 
-from .MNorm import *
+from ConditionalGMM.MNorm import *
 
 
 class CondGMM(object):
