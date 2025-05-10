@@ -27,8 +27,13 @@ jobs:
       - uses: astral-sh/ruff-action@v3
 
       - name: Run tests with coverage
-        run: uv run pytest tests
+        run: uv run coverage run -m pytest
 
-      # TODO: figure out how to use this
-      # - name: Produce coverage report
-      #   run: uv run coverage report -m
+      - name: Produce coverage report
+        run: uv run coverage xml
+
+      - name: Show coverage report 
+        uses: orgoro/coverage@v3.2
+        with:
+            coverageFile: ./coverage.xml
+            token: ${{ secrets.GITHUB_TOKEN }}
