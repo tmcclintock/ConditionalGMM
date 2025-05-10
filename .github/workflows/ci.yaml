@@ -24,7 +24,14 @@ jobs:
       - name: Install the project and dependencies
         run: uv sync --all-extras
 
-      - uses: astral-sh/ruff-action@v3
+      - name: Lint
+        uses: astral-sh/ruff-action@v3
+
+      - name: Type checkg
+        run: |
+          uv tool install ty
+          ty check src
+          ty check tests
 
       - name: Run tests with coverage
         run: uv run coverage run -m pytest
