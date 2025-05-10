@@ -39,7 +39,7 @@ Homepage = "https://github.com/tmcclintock/ConditionalGMM"
 Issues = "https://github.com/tmcclintock/ConditionalGMM/issues"
 
 [tool.coverage.run]
-include = ["./ConditionalGMM/*"]
+include = ["./src/ConditionalGMM/*"]
 omit = [
   "*tests*",
   "*__init__*"
