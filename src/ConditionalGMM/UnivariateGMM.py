@@ -3,8 +3,6 @@
 import numpy as np
 import scipy as sp
 
-from ConditionalGMM.condGMM import *
-
 
 class UniGMM(object):
     """Conditional Gaussian mixture model of a single random variable.
