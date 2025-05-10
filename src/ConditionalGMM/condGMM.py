@@ -1,7 +1,7 @@
 """Conditional Gaussian mixture model."""
 
 import numpy as np
-import scipy as sp
+from scipy.stats import multivariate_normal
 
 from ConditionalGMM.MNorm import CondMNorm
 
@@ -103,7 +103,7 @@ class CondGMM:
 
         probs = w * np.array(
             [
-                sp.stats.multivariate_normal.pdf(x2, mean=mus[i], cov=covs[i])
+                multivariate_normal.pdf(x2, mean=mus[i], cov=covs[i])
                 for i in range(len(w))
             ]
         )

@@ -1,7 +1,8 @@
 """Helpful functions that can only be computed (easily) for univarate GMMs."""
 
 import numpy as np
-import scipy as sp
+from scipy.optimize import newton
+from scipy.stats import norm
 
 
 class UniGMM:
@@ -49,7 +50,7 @@ class UniGMM:
         assert np.ndim(x) < 2
         # TODO vectorize
         pdfs = np.array(
-            [sp.stats.norm.pdf(x, mi, vi) for mi, vi in zip(self.means, self.variances)]
+            [norm.pdf(x, mi, vi) for mi, vi in zip(self.means, self.variances)]
         )
         return np.dot(self.weights, pdfs)
 
@@ -76,7 +77,7 @@ class UniGMM:
 
         """
         cdfs = np.array(
-            [sp.stats.norm.cdf(x, mi, vi) for mi, vi in zip(self.means, self.variances)]
+            [norm.cdf(x, mi, vi) for mi, vi in zip(self.means, self.variances)]
         )
         return np.dot(self.weights, cdfs)
 
@@ -103,9 +104,7 @@ class UniGMM:
             (float or array-like) quantile corresponding to `q`
 
         """
-        return sp.optimize.newton(
-            func=lambda x: self.cdf(x) - q, x0=self.mean(), fprime=self.pdf
-        )
+        return newton(func=lambda x: self.cdf(x) - q, x0=self.mean(), fprime=self.pdf)
 
     def mean(self):
         """Mean of the RV for the GMM.
