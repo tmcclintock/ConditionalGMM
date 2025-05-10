@@ -30,10 +30,4 @@ jobs:
         run: uv run coverage run -m pytest
 
       - name: Produce coverage report
-        run: uv run coverage xml
-
-      - name: Show coverage report 
-        uses: orgoro/coverage@v3.2
-        with:
-            coverageFile: ./coverage.xml
-            token: ${{ secrets.GITHUB_TOKEN }}
+        run: uv run coverage report -m
